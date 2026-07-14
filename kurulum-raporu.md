@@ -1,4 +1,4 @@
-# Kurulum Raporu - Gün 1
+# Kurulum Raporu - Gün 1,2
 
 ## Yapılan İşlemler
 - WSL2 + Ubuntu kuruldu
@@ -10,5 +10,6 @@
 - dev-journey reposu oluşturuldu, ilk commit push edildi
 
 ## Versiyon Doğrulama
-![Versiyonlar 1](screenshots/Ekran görüntüsü 2026-07-14 195423.png)
-![Versiyonlar 2](screenshots/Ekran görüntüsü 2026-07-14 195657.png)
+![Versiyonlar 1](screenshots/versiyon1.png)
+
+![Versiyonlar 2](screenshots/versiyon2.png)
