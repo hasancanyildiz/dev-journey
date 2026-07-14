@@ -1,4 +1,4 @@
-# Kurulum Raporu - Gün 1
+# Kurulum Raporu - Gün 1,2
 
 ## Yapılan İşlemler
 - WSL2 + Ubuntu kuruldu
