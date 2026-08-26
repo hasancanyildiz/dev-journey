@@ -1,16 +1,19 @@
 import json
 
 gorevler = []
+id_sayacı =1
 
 
 def gorev_ekle(baslik):
-    yeni_gorev_id = len(gorevler) + 1
+    global id_sayacı
+    
     gorev = {
         "gorev_id": yeni_gorev_id,
         "baslik": baslik,
         "tamamlandi": False
     }
     gorevler.append(gorev)
+    id_sayacı+=1
     print(f"'{baslik}' görevi eklendi.")
 
 
@@ -56,6 +59,10 @@ def gorevleri_yukle():
             gorevler = json.load(dosya)
     except FileNotFoundError:
         gorevler = []
+    if gorevler:
+        id_sayacı = max(gorev["gorev_id"] for gorev in gorevler) + 1
+    else:
+        id_sayacı = 1    
 
 
 def menu_goster():
