@@ -1,12 +1,19 @@
 import json
-
+ 
 gorevler = []
 id_sayacı = 1
-
-
+ 
+ 
+def gorev_bul(gorev_id):
+    for gorev in gorevler:
+        if gorev["gorev_id"] == gorev_id:
+            return gorev
+    return None
+ 
+ 
 def gorev_ekle(baslik):
     global id_sayacı
-
+ 
     gorev = {
         "gorev_id": id_sayacı,
         "baslik": baslik,
@@ -15,12 +22,12 @@ def gorev_ekle(baslik):
     gorevler.append(gorev)
     id_sayacı += 1
     return gorev
-
-
+ 
+ 
 def gorev_listele():
     return gorevler
-
-
+ 
+ 
 def gorevleri_yazdir(liste):
     if not liste:
         print("Görev yok")
@@ -31,29 +38,29 @@ def gorevleri_yazdir(liste):
         else:
             durum = " "
         print(f"[{durum}] {gorev['gorev_id']} {gorev['baslik']}")
-
-
+ 
+ 
 def gorev_tamamla(gorev_id):
-    for gorev in gorevler:
-        if gorev["gorev_id"] == gorev_id:
-            gorev["tamamlandi"] = True
-            return True
-    return False
-
-
+    gorev = gorev_bul(gorev_id)
+    if gorev is None:
+        return False
+    gorev["tamamlandi"] = True
+    return True
+ 
+ 
 def gorev_sil(gorev_id):
-    for gorev in gorevler:
-        if gorev["gorev_id"] == gorev_id:
-            gorevler.remove(gorev)
-            return True
-    return False
-
-
+    gorev = gorev_bul(gorev_id)
+    if gorev is None:
+        return False
+    gorevler.remove(gorev)
+    return True
+ 
+ 
 def gorevleri_kaydet():
     with open("gorevler.json", "w", encoding="utf-8") as dosya:
         json.dump(gorevler, dosya, ensure_ascii=False, indent=4)
-
-
+ 
+ 
 def gorevleri_yukle():
     global gorevler, id_sayacı
     try:
@@ -61,13 +68,13 @@ def gorevleri_yukle():
             gorevler = json.load(dosya)
     except FileNotFoundError:
         gorevler = []
-
+ 
     if gorevler:
         id_sayacı = max(gorev["gorev_id"] for gorev in gorevler) + 1
     else:
         id_sayacı = 1
-
-
+ 
+ 
 def menu_goster():
     print("\n    Görev Takip Uygulaması   ")
     print("1. Görev Ekle")
@@ -75,15 +82,15 @@ def menu_goster():
     print("3. Görevi Tamamla")
     print("4. Görev Sil")
     print("5. Çıkış")
-
-
+ 
+ 
 def main():
     gorevleri_yukle()
-
+ 
     while True:
         menu_goster()
         secim = input("Seçim: ")
-
+ 
         match secim:
             case "1":
                 baslik = input("Baslik giriniz: ")
@@ -115,7 +122,7 @@ def main():
                 break
             case _:
                 print("Hata: Geçersiz seçim, 1 ile 5 arası sayı giriniz")
-
-
+ 
+ 
 if __name__ == "__main__":
     main()

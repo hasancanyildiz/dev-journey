@@ -1,17 +1,17 @@
 [
     {
-        "id": 1,
+        "gorev_id": 1,
         "baslik": "ekmek al",
         "tamamlandi": false
     },
     {
-        "id": 2,
+        "gorev_id": 2,
         "baslik": "okula git",
         "tamamlandi": true
     },
     {
-        "id": 4,
-        "baslik": "kitap oku",
+        "gorev_id": 5,
+        "baslik": "Markete git",
         "tamamlandi": false
     }
 ]
