@@ -4,9 +4,9 @@ gorevler = []
 
 
 def gorev_ekle(baslik):
-    yeni_id = len(gorevler) + 1
+    yeni_gorev_id = len(gorevler) + 1
     gorev = {
-        "id": yeni_id,
+        "gorev_id": yeni_gorev_id,
         "baslik": baslik,
         "tamamlandi": False
     }
@@ -23,23 +23,23 @@ def gorev_listele():
             durum = "✓"
         else:
             durum = " "
-        print(f"[{durum}] {gorev['id']} {gorev['baslik']}")
+        print(f"[{durum}] {gorev['gorev_id']} {gorev['baslik']}")
 
 
-def gorev_tamamla(id):
+def gorev_tamamla(gorev_id):
     for gorev in gorevler:
-        if gorev["id"] == id:
+        if gorev["gorev_id"] == gorev_id:
             gorev["tamamlandi"] = True
-            print(f"{id} numarali görev tamamlandı")
+            print(f"{gorev_id} numarali görev tamamlandı")
             return
     print(f"Hata görev bulunamadı")
 
 
-def gorev_sil(id):
+def gorev_sil(gorev_id):
     for gorev in gorevler:
-        if gorev["id"] == id:
+        if gorev["gorev_id"] == gorev_id:
             gorevler.remove(gorev)
-            print(f"{id} li görev çıkarıldı")
+            print(f"{gorev_id} li görev çıkarıldı")
             return
     print(f"Hata görev bulunamadı")
 
@@ -82,14 +82,14 @@ def main():
                 gorev_listele()
             case "3":
                 try:
-                    id = int(input("Tamamlanacak görev numarası: "))
-                    gorev_tamamla(id)
+                    gorev_id = int(input("Tamamlanacak görev numarası: "))
+                    gorev_tamamla(gorev_id)
                 except ValueError:
                     print("Hata: Geçerli bir numara girmelisiniz.")
             case "4":
                 try:
-                    id = int(input("Silinecek görev numarası: "))
-                    gorev_sil(id)
+                    gorev_id = int(input("Silinecek görev numarası: "))
+                    gorev_sil(gorev_id)
                 except ValueError:
                     print("Hata: Geçerli bir numara girmelisiniz.")
             case "5":
