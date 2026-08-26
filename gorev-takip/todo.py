@@ -1,28 +1,32 @@
 import json
 
 gorevler = []
-id_sayacı =1
+id_sayacı = 1
 
 
 def gorev_ekle(baslik):
     global id_sayacı
-    
+
     gorev = {
-        "gorev_id": yeni_gorev_id,
+        "gorev_id": id_sayacı,
         "baslik": baslik,
         "tamamlandi": False
     }
     gorevler.append(gorev)
-    id_sayacı+=1
-    print(f"'{baslik}' görevi eklendi.")
+    id_sayacı += 1
+    return gorev
 
 
 def gorev_listele():
-    if not gorevler:
+    return gorevler
+
+
+def gorevleri_yazdir(liste):
+    if not liste:
         print("Görev yok")
         return
-    for gorev in gorevler:
-        if gorev["tamamlandi"] == True:
+    for gorev in liste:
+        if gorev["tamamlandi"]:
             durum = "✓"
         else:
             durum = " "
@@ -33,18 +37,16 @@ def gorev_tamamla(gorev_id):
     for gorev in gorevler:
         if gorev["gorev_id"] == gorev_id:
             gorev["tamamlandi"] = True
-            print(f"{gorev_id} numarali görev tamamlandı")
-            return
-    print(f"Hata görev bulunamadı")
+            return True
+    return False
 
 
 def gorev_sil(gorev_id):
     for gorev in gorevler:
         if gorev["gorev_id"] == gorev_id:
             gorevler.remove(gorev)
-            print(f"{gorev_id} li görev çıkarıldı")
-            return
-    print(f"Hata görev bulunamadı")
+            return True
+    return False
 
 
 def gorevleri_kaydet():
@@ -53,16 +55,17 @@ def gorevleri_kaydet():
 
 
 def gorevleri_yukle():
-    global gorevler
+    global gorevler, id_sayacı
     try:
         with open("gorevler.json", "r", encoding="utf-8") as dosya:
             gorevler = json.load(dosya)
     except FileNotFoundError:
         gorevler = []
+
     if gorevler:
         id_sayacı = max(gorev["gorev_id"] for gorev in gorevler) + 1
     else:
-        id_sayacı = 1    
+        id_sayacı = 1
 
 
 def menu_goster():
@@ -84,19 +87,26 @@ def main():
         match secim:
             case "1":
                 baslik = input("Baslik giriniz: ")
-                gorev_ekle(baslik)
+                gorev = gorev_ekle(baslik)
+                print(f"'{gorev['baslik']}' görevi eklendi.")
             case "2":
-                gorev_listele()
+                gorevleri_yazdir(gorev_listele())
             case "3":
                 try:
                     gorev_id = int(input("Tamamlanacak görev numarası: "))
-                    gorev_tamamla(gorev_id)
+                    if gorev_tamamla(gorev_id):
+                        print(f"{gorev_id} numaralı görev tamamlandı")
+                    else:
+                        print("Hata: görev bulunamadı")
                 except ValueError:
                     print("Hata: Geçerli bir numara girmelisiniz.")
             case "4":
                 try:
                     gorev_id = int(input("Silinecek görev numarası: "))
-                    gorev_sil(gorev_id)
+                    if gorev_sil(gorev_id):
+                        print(f"{gorev_id} li görev çıkarıldı")
+                    else:
+                        print("Hata: görev bulunamadı")
                 except ValueError:
                     print("Hata: Geçerli bir numara girmelisiniz.")
             case "5":
