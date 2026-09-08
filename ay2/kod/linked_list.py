@@ -7,6 +7,7 @@ class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
+        self.prev =None
 
 
 # LinkedList (Singly Linked List)
@@ -14,6 +15,7 @@ class Node:
 class LinkedList:
     def __init__(self):
         self.head = None
+        self.tail=None
 
     # insert: listenin sonuna yeni bir değer ekler.
     def insert(self, data):
@@ -21,12 +23,15 @@ class LinkedList:
 
         if self.head is None:
             self.head = yeni_node
+            self.tail = yeni_node
             return
 
         simdiki = self.head
         while simdiki.next is not None:
             simdiki = simdiki.next
         simdiki.next = yeni_node
+        yeni_node.prev=simdiki
+        self.tail=yeni_node 
 
     # search: verilen değeri listede arar. Bulursa True, bulamazsa False döner.
     def search(self, data):
@@ -39,21 +44,22 @@ class LinkedList:
 
     # delete: verilen değere sahip ilk düğümü listeden çıkarır.
     def delete(self, data):
-        onceki = None
-        simdiki = self.head
+        simdiki=self.head
 
         while simdiki is not None:
-            if simdiki.data == data:
-                if onceki is None:
-                    # silinecek düğüm head ise, head'i bir sonrakine kaydır
-                    self.head = simdiki.next
+            if simdiki.data== data:
+                if simdiki.prev is None:
+                    self.head =simdiki.next
                 else:
-                    # onceki düğümü, silinecek düğümü atlayıp bir sonrakine bağla
-                    onceki.next = simdiki.next
+                    simdiki.prev.next =simdiki.next
+                if simdiki.next is None:
+                    self.tail =simdiki.prev
+                else :
+                    simdiki.next.prev=simdiki.prev
                 return True
-            onceki = simdiki
-            simdiki = simdiki.next
+            simdiki=simdiki.next
         return False
+
 
     # print_liste: listenin tüm elemanlarını baştan sona yazdırır.
     def print_liste(self):
@@ -71,18 +77,34 @@ class LinkedList:
 
         print(cikti)
 
+
+    def print_geriye(self):
+        simdiki = self.tail
+        if simdiki is None:
+            print("Liste boş")
+            return
+
+        cikti = ""
+        while simdiki is not None:
+            cikti = cikti + str(simdiki.data)
+            if simdiki.prev is not None:
+                cikti = cikti + " -- "
+            simdiki = simdiki.prev
+
+        print(cikti)
+
     # reverse: listenin yönünü tersine çevirir (head sondan başa döner).
     def reverse(self):
-        onceki = None
         simdiki = self.head
+        self.tail = self.head
 
         while simdiki is not None:
             sonraki = simdiki.next   # bir sonraki düğümü kaybetmeden önce sakla
-            simdiki.next = onceki    # şu anki düğümün yönünü tersine çevir
-            onceki = simdiki         # önceki'yi bir ileri taşı
-            simdiki = sonraki        # şu anki'yi bir ileri taşı
+            simdiki.next, simdiki.prev = simdiki.prev, simdiki.next
 
-        self.head = onceki  # liste tersine döndüğü için yeni head, eski son düğüm
+            if sonraki is None:
+                self.head = simdiki
+            simdiki = sonraki
 
 
 # Test
@@ -91,13 +113,21 @@ if __name__ == "__main__":
     liste.insert(10)
     liste.insert(20)
     liste.insert(30)
-    liste.print_liste()          # 10 -- 20 -- 30
+    liste.insert(40)
+    print("İleri:")
+    liste.print_liste()      # 10 -- 20 -- 30 -- 40
 
-    print(liste.search(30))      # True (artık son eleman da doğru bulunuyor)
-    print(liste.search(99))      # False
+    print("Geri:")
+    liste.print_geriye()     
 
     liste.delete(20)
-    liste.print_liste()          # 10 -- 30
+    print("20 silindikten sonra ileri:")
+    liste.print_liste()     
+    print("20 silindikten sonra geri:")
+    liste.print_geriye()     
 
     liste.reverse()
-    liste.print_liste()          # 30 -- 10
+    print("Reverse sonrası ileri:")
+    liste.print_liste()     
+    print("Reverse sonrası geri:")
+    liste.print_geriye()    
